@@ -55,9 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             width: 100%;
         }
 
-        .eror {
-            color: red;
-        }
 
         div {
             border: black;
@@ -100,11 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             margin-left: 17%;
         }
 
-        th, tr {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
     </style>
 </head>
 <body>

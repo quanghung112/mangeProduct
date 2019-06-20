@@ -3,8 +3,14 @@
 include "../class/App.php";
 $idProduct=$_GET['id'];
 if ($_SERVER['REQUEST_METHOD']=='POST'){
-    $app=new App();
-    $app->deleteProduct($idProduct);
+    if ($_POST['Yes']=='Yes'){
+        $app=new App();
+        $app->deleteProduct($idProduct);
+    }
+    if ($_POST['No']=='No'){
+        header('Location: ../display_products.php');
+    }
+
 }
 ?>
 <!doctype html>
@@ -18,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     <style>
         h1{
             text-align: center;
+            color: red;
         }
         table{
             border-collapse: collapse;
@@ -31,25 +38,24 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
             left: 30%;
         }
 
-        button {
+        input {
             width: 100px;
-            height: 30px;
+            height: 40px;
             font-size: 18px;
             border-radius: 3px;
-            margin-top: 30px;
+            margin-top: 50px;
             font-family: "Abyssinica SIL";
-            margin-left: 18%;
+            margin-left: 16%;
         }
     </style>
 </head>
 <body>
+<form method="post">
     <div>
         <h1>Do you want delete Product</h1>
-        <form method="post">
-            <button type="submit" >YES</button>
-        </form>
-        <a href="../display_products.php">
-            <button type="submit">NO</button>
-        </a>
+        <input type="submit" name="Yes" value="Yes">
+        <input type="submit" name="No" value="No">
     </div>
+</form>
+
 </body>

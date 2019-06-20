@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             border-radius: 3px;
             margin-top: 10px;
             font-family: "Abyssinica SIL";
-            margin-left: 74%;
+            margin-left: 67%;
         }
 
         span {
