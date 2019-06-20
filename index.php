@@ -1,7 +1,7 @@
 <?php
-include 'class/App.php';
+include 'class/Connection.php';
 
-$app=new App('products.json');
+$app=new Connection('products.json');
 $app->addProductstoJSON();
 $app->index();
 ?>

@@ -1,4 +1,42 @@
-
+<?php
+include "../class/App.php";
+include "../class/Product.php";
+$idProduct = $_GET['id'];
+$app = new App();
+$productDB = $app->showProduct($idProduct);
+$product = new Product($productDB['nameProduct'], $productDB['Information'], $productDB['statusProduct'], $productDB['price']);
+$hasError = false;
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_POST['Save'] == 'Save') {
+        $name = $_POST['name'];
+        $inform = $_POST['information'];
+        $price = $_POST['cost'];
+        $status = $_POST['status'];
+        if (empty($name)) {
+            $error = "Name Prouct is not required field";
+            $hasError = true;
+        }
+        if (empty($inform)) {
+            $error = "Information is not required field";
+            $hasError = true;
+        }
+        if (empty($price)) {
+            $error = "Price is not required field";
+            $hasError = true;
+        }
+        if (!$hasError) {
+            $product->setNameProduct($name);
+            $product->setInformation($inform);
+            $product->setStatusProduct($status);
+            $product->setPrice($price);
+            $app->editProduct($product, $idProduct);
+        }
+    }
+    if ($_POST['Cancel']=='Cancel'){
+        header('Location: ../display_products.php');
+    }
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,17 +46,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sign in</title>
     <style>
-        h1{
+        h1 {
             text-align: center;
         }
-        table{
+
+        table {
             border-collapse: collapse;
             width: 100%;
         }
-        .eror{
+
+        .eror {
             color: red;
         }
-        div{
+
+        div {
             border: black;
             width: 500px;
             height: 300px;
@@ -43,20 +84,20 @@
             margin-top: 10px;
         }
 
-        button {
-            width: 200px;
-            height: 30px;
+        .sub {
+            width: 100px;
+            height: 40px;
             font-size: 18px;
             border-radius: 3px;
             margin-top: 50px;
             font-family: "Abyssinica SIL";
-            margin-left: 30%;
+            margin-left: 23%;
         }
 
         span {
             width: 150px;
             display: inline-block;
-            margin-left: 15%;
+            margin-left: 17%;
         }
 
         th, tr {
@@ -69,20 +110,25 @@
 <body>
 <form method="post">
     <div>
-        <h1>Add new Product</h1>
+        <h1>Edit Product</h1>
         <span>Ten san pham:</span>
-        <input type="text" name="name" placeholder="Nhap ten san pham">
+        <input type="text" name="name" placeholder="Nhap ten san pham" value="<?php echo $product->getNameProduct() ?>">
         <br>
         <span>Thong tin san pham:</span>
-        <input type="text" name="information" placeholder="Nhap thong tin">
+        <input type="text" name="information" placeholder="Nhap thong tin"
+               value="<?php echo $product->getInformation() ?>">
         <br>
         <span>Gia san pham</span>
-        <input type="number" name="cost" placeholder="Nhap gia san pham">
+        <input type="number" name="cost" placeholder="Nhap gia san pham" value="<?php echo $product->getPrice() ?>">
         <br>
         <span>Tinh trang sang pham</span>
-        <input type="text" name="status" placeholder="Nhap tinh trang san pham">
+        <select name="status">
+            <option value="Out Of Stock">Out Of Stock</option>
+            <option value="In Of Stock">In Of Stock</option>
+        </select>
         <br>
-        <button type="submit">Edit</button>
+        <input class="sub" type="submit" name="Save" value="Save">
+        <input class="sub" type="submit" name="Cancel" value="Cancel">
     </div>
 </form>
 </body>

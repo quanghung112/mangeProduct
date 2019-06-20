@@ -2,54 +2,88 @@
 
 
 class Product{
-    public $name;
-    public $information;
-    public $cost;
-    public $status;
-    public function __construct($name,$information,$cost,$status){
-        $this->name=$name;
-        $this->cost=$cost;
-        $this->status=$status;
-        $this->information=$information;
+    private $nameProduct;
+    private $Information;
+    private $statusProduct;
+    private $price;
+    private $idProduct;
+    public function __construct($name,$information, $status, $price,$idProduct=''){
+        $this->nameProduct=$name;
+        $this->Information=$information;
+        $this->statusProduct=$status;
+        $this->price=$price;
+        $this->idProduct=$idProduct;
     }
 
-
-    public function getName(){
-        return $this->name;
+    /**
+     * @return mixed
+     */
+    public function getIdProduct()
+    {
+        return $this->idProduct;
+    }
+    /**
+     * @return mixed
+     */
+    public function getNameProduct()
+    {
+        return $this->nameProduct;
     }
 
-
-    public function setName($name){
-        $this->name = $name;
+    /**
+     * @return mixed
+     */
+    public function getInformation()
+    {
+        return $this->Information;
     }
 
-
-    public function getInformation(){
-        return $this->information;
+    /**
+     * @return mixed
+     */
+    public function getPrice()
+    {
+        return $this->price;
     }
 
-
-    public function setInformation($information){
-        $this->information = $information;
+    /**
+     * @return mixed
+     */
+    public function getStatusProduct()
+    {
+        return $this->statusProduct;
     }
 
-
-    public function getCost(){
-        return $this->cost;
+    /**
+     * @param mixed $nameProduct
+     */
+    public function setNameProduct($nameProduct)
+    {
+        $this->nameProduct = $nameProduct;
     }
 
-
-    public function setCost($cost){
-        $this->cost = $cost;
+    /**
+     * @param mixed $Information
+     */
+    public function setInformation($Information)
+    {
+        $this->Information = $Information;
     }
 
-    public function getStatus(){
-        return $this->status;
+    /**
+     * @param mixed $statusProduct
+     */
+    public function setStatusProduct($statusProduct)
+    {
+        $this->statusProduct = $statusProduct;
     }
 
-
-    public function setStatus($status){
-        $this->status = $status;
+    /**
+     * @param mixed $price
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
     }
 }
 

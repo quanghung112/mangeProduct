@@ -1,15 +1,30 @@
 <?php
-require_once "class/Product.php";
-require_once "class/App.php";
+include "../class/Product.php";
+include "../class/Connection.php";
+include "../class/App.php";
+$hasError=false;
 if ($_SERVER['REQUEST_METHOD']=='POST'){
     $name=$_POST['name'];
     $inform=$_POST['information'];
-    $cost=$_POST['cost'];
+    $price=$_POST['cost'];
     $status=$_POST['status'];
-    $product=new Product($name,$inform,$cost,$status);
-    $addProducts=new App('products.json');
-    $addProducts->addProductstoJSON($product);
-    header('Location: display_products.php');
+    if (empty($name)){
+        $error="Name Prouct is not required field";
+        $hasError=true;
+    }
+    if (empty($inform)){
+        $error="Information is not required field";
+        $hasError=true;
+    }
+    if (empty($price)){
+        $error="Price is not required field";
+        $hasError=true;
+    }
+    if (!$hasError){
+        $product=new Product($name,$inform,$status,$price);
+        $appProduct=new App();
+        $appProduct->addProduct($product);
+    }
 }
 ?>
 <!doctype html>
@@ -77,6 +92,12 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
+        select {
+            width: 300px;
+            height: 30px;
+            border-radius: 3px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -85,15 +106,24 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
         <h1>Add new Product</h1>
         <span>Ten san pham:</span>
         <input type="text" name="name" placeholder="Nhap ten san pham">
+        <?php if (empty($name)):?>
+            <span class="eror"><?php echo $error?></span><?php endif;?>
         <br>
         <span>Thong tin san pham:</span>
         <input type="text" name="information" placeholder="Nhap thong tin">
+        <?php if (empty($inform)):?>
+            <span class="eror"><?php echo $error?></span><?php endif;?>
         <br>
         <span>Gia san pham</span>
         <input type="number" name="cost" placeholder="Nhap gia san pham">
+        <?php if (empty($price)):?>
+            <span class="eror"><?php echo $error?></span><?php endif;?>
         <br>
         <span>Tinh trang sang pham</span>
-        <input type="text" name="status" placeholder="Nhap tinh trang san pham">
+        <select name="status">
+            <option value="Out Of Stock">Out Of Stock</option>
+            <option value="In Of Stock">In Of Stock</option>
+        </select>
         <br>
         <button type="submit">ADD_PRODUCT</button>
     </div>

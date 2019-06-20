@@ -1,6 +1,8 @@
 <?php
+include "class/App.php";
+include "class/Product.php";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    header("Location: Add_product.php");
+    header("Location: view/Add_product.php");
 }
 ?>
 <!doctype html>
@@ -13,11 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Sign in</title>
     <style>
         table {
+            margin-left: 20%;
             border-collapse: collapse;
-            width: 100%;
+            width: 60%;
         }
-
-        .error {
+        .status{
             color: red;
         }
 
@@ -40,13 +42,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         button {
+            width: 100px;
+            height: 30px;
+            font-size: 18px;
+            border-radius: 3px;
+            margin-top: 10px;
+            font-family: "Abyssinica SIL";
+        }
+        .add{
             width: 200px;
             height: 30px;
             font-size: 18px;
             border-radius: 3px;
             margin-top: 10px;
             font-family: "Abyssinica SIL";
-
+            margin-left: 74%;
         }
 
         span {
@@ -54,44 +64,61 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             display: inline-block;
         }
 
-        th, tr {
+         tr,td {
             padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
         }
     </style>
 </head>
 <body>
-<form method="post">
-    <button type="submit">ADD_PRODUCT</button>
-</form>
 <h2>Danh sach san pham</h2>
 <table>
     <tr>
         <th>STT</th>
         <th>Name Product</th>
         <th>Information</th>
-        <th>Cost</th>
         <th>Status</th>
+        <th>Price</th>
+        <th>App</th>
     </tr>
     <?php
-    require "class/App.php";
-    $app = new App('products.json');
-    $products = $app->readJSON();
-    foreach ($products as $key => $value):
+    $app=new App();
+    $products=$app->readProducts();
+    $arrayProduct=[];
+    foreach ($products as $value) {
+        $product = new Product($value['nameProduct'], $value['Information'], $value['statusProduct'], $value['price'],$value['id']);
+        array_push($arrayProduct, $product);
+    }
+    foreach ($arrayProduct as $key => $value){
         ?>
         <tr>
-            <td><?php echo $key + 1 ?></td>
-            <td><?php echo $value['name']; ?></td>
-            <td><?php echo $value['information']; ?></td>
-            <td><?php echo $value['cost']; ?></td>
-            <td><?php echo $value['status']; ?></td>
+            <td><?php echo $key+1 ?></td>
+            <td><?php echo $value->getNameProduct(); ?></td>
+            <td><?php echo $value->getInformation(); ?></td>
+            <?php if ($value->getStatusProduct()=="Out Of Stock"){ ?>
+                <td class="status"><?php echo $value->getStatusProduct(); ?></td>
+            <?php } else { ?>
+                <td><?php echo $value->getStatusProduct(); ?></td>
+            <?php }?>
+            <td><?php echo $value->getPrice(); ?></td>
             <td>
-                <form method="get" action="view/edit.php">
-                    <button type="submit" name="<?php echo $key?>">Edit</button>
-                </form>
+                <a href="view/edit.php?page=edit&id=<?php echo $value->getIdProduct()?>" >
+                    <button type="submit">Edit</button>
+                </a>
+                <a href="view/delete.php?page=delete&id=<?php echo $value->getIdProduct()?>" >
+                    <button type="submit">Delete</button>
+                </a>
             </td>
         </tr>
-    <?php endforeach ?>
+    <?php } ?>
 </table>
+<form method="post">
+    <button class="add" type="submit">ADD_PRODUCT</button>
+</form>
 </body>
